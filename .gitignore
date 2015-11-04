@@ -1,0 +1,6 @@
+.DS_Store
+.idea
+node_modules
+client/.tmp
+client/.sass-cache
+bower_components

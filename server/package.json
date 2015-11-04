@@ -1,0 +1,12 @@
+{
+  "name": "blockswap-server",
+  "private": true,
+  "devDependencies": {},
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "extend": "^3.0.0",
+    "websockets": "^0.2.0"
+  }
+}
