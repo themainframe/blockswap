@@ -1,4 +1,6 @@
 "use strict";
+var http = require('http');
+var extend = require('extend');
 process.title = 'blockswap-server';
 
 // Port where we'll run the Websocket server
@@ -6,7 +8,11 @@ var webSocketsServerPort = 1337;
 
 // Websocket and http servers
 var webSocketServer = require('websocket').server;
-var http = require('http');
+
+// Base command
+var command = {
+  version: '0.1'
+};
 
 /**
  * Currently connected peers
@@ -32,11 +38,10 @@ wsServer.on('request', function(request) {
   console.log((new Date()) + ' Connection accepted.');
 
   // Send a sysinfo packet
-  connection.sendUTF(JSON.stringify({
-    version: '0.1',
+  connection.sendUTF(JSON.stringify(extend(command, {
     command: 'sysinfo',
     peers: peers.length
-  }));
+  })));
 
   // Peer sent a message
   connection.on('message', function(message) {
