@@ -4,11 +4,11 @@
  * @ngdoc function
  * @name blockswapClient.controller:MainCtrl
  * @description
- * # MainCtrl
+ * # SearchCtrl
  * Controller of the blockswapClient
  */
 angular.module('blockswapClient')
-  .controller('MainCtrl', ['Peer', '$window', function (peer, $window) {
+  .controller('SearchCtrl', ['$window', function ($window) {
 
 
 

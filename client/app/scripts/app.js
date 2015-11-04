@@ -16,19 +16,23 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'ngWebSocket'
+    'ngWebSocket',
+    'angularFileUpload'
   ])
+  .run(['Peer', function (peer) {
+    // Peer init
+  }])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
-      })
-      .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl',
         controllerAs: 'about'
+      })
+      .when('/upload', {
+        templateUrl: 'views/upload.html',
+        controller: 'UploadCtrl',
+        controllerAs: 'upload'
       })
       .otherwise({
         redirectTo: '/'
