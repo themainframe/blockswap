@@ -38,13 +38,15 @@ A request for the client to store a block.
         fuid: 'ccea30c73f9f5ce24a971e6b3f45a7e6efb03da2',
         name: 'cats.jpg',
         seq: 51,
-        of: 65
+        of: 65,
+        data: '19j!9=c10kG1P}P...'
     }
 
 * `fuid` contains the unique identifier of the file within the network that the block is part of
 * `name` contains the _nice_ filename of the file that the block is part of
 * `seq` contains the block sequence number
 * `of` contains the number of blocks that make up the file the block is part of
+* `data` contains the base64-encoded block data
 
 ### `get`
 
