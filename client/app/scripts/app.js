@@ -17,12 +17,17 @@ angular
     'ngSanitize',
     'ngTouch',
     'ngWebSocket',
-    'angularFileUpload'
+    'angularFileUpload',
+    'LocalStorageModule'
   ])
   .run(['Peer', function (peer) {
     // Peer init
   }])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, localStorageServiceProvider) {
+
+    localStorageServiceProvider
+      .setPrefix('blockswap');
+
     $routeProvider
       .when('/', {
         templateUrl: 'views/about.html',

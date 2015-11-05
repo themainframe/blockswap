@@ -8,6 +8,8 @@
  * Controller of the blockswapClient
  */
 angular.module('blockswapClient')
-  .controller('AboutCtrl', function () {
+  .controller('AboutCtrl', ['$scope', function ($scope) {
 
-  });
+
+
+  }]);

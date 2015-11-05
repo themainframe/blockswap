@@ -41,12 +41,6 @@
                 <li class="active"><a href="#/"><i class="fa fa-question-circle"></i>&nbsp; About</a></li>
                 <li><a href="#upload"><i class="fa fa-cloud-upload"></i>&nbsp; Upload</a></li>
             </ul>
-            <form class="navbar-form navbar-right" role="search">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default">Submit</button>
-              </form>
           </div>
         </div>
       </div>
@@ -60,15 +54,16 @@
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+    <script src="bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-websocket/angular-websocket.min.js"></script>
-    <script src="bower_components/angular-file-upload/dist/angular-file-upload.min.js"></script>
+    <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -78,6 +73,7 @@
     <script src="scripts/services/handlers/sysinfo.js"></script>
     <script src="scripts/controllers/about.js"></script>
     <script src="scripts/controllers/upload.js"></script>
+    <script src="scripts/services/storage.js"></script>
     <!-- endbuild -->
 </body>
 </html>
