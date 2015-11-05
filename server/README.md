@@ -128,3 +128,17 @@ A response to the server indicating a hit - a match for a search term in a `quer
     * `fuid` contains the unique identifier of the file within the network that the block is part of
     * `name` contains the _nice_ filename of the file that the block is part of
     * `have` contains an array of block sequence numbers that the client has for the file
+    
+### `clientinfo` - unsolicited information about the client
+
+Information about the current state of the client.
+
+	{
+		command: 'clientinfo',
+		version: '0.1',
+		capacity: 560,
+		used: 410,		
+	} 
+	
+* `capacity` contains the total number of blocks that the client can store
+* `used` contains the total number of blocks currently held by the client
