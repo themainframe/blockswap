@@ -25,6 +25,24 @@ var server = http.createServer();
 server.listen(webSocketsServerPort);
 var wsServer = new webSocketServer({ httpServer: server });
 
+/**
+ * Register handlers
+ */
+var handlers = {
+    clientinfo: require('./handlers/clientinfo')
+};
+
+/**
+ * Periodically send a sysinfo command to each peer.
+ */
+setInterval(function() {
+    for (var i = 0; i < peers.length; i ++) {
+        peers[i].sendUTF(JSON.stringify(extend(command, {
+            command: 'sysinfo',
+            peers: peers.length
+        })));
+    }
+}, 2000);
 
 wsServer.on('request', function(request) {
 
@@ -47,6 +65,7 @@ wsServer.on('request', function(request) {
   connection.on('message', function(message) {
     if (message.type === 'utf8') {
         // Handle incoming protocol message
+        console.log(message);
     }
   });
 
