@@ -13,7 +13,8 @@
     "angular-touch": "^1.4.0",
     "angular-websocket": "~1.0.14",
     "bootstrap-sass-official": "^3.2.0",
-    "cryptojslib": "~3.1.2"
+    "cryptojslib": "~3.1.2",
+    "file-saver.js": "~1.20150507.2"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"
