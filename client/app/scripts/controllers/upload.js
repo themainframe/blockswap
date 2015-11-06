@@ -32,7 +32,7 @@ angular.module('blockswapClient')
             var mimeType = url.slice(5, url.indexOf(';'));
 
             // Get the raw data
-            var base64Data = url.slice(url.indexOf(','));
+            var base64Data = url.slice(url.indexOf(',') + 1);
 
             // Upload the content
             BlockStorage.splitAndStore(file.name, mimeType, base64Data);

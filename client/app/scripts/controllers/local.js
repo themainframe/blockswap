@@ -8,6 +8,23 @@
  * Controller of the blockswapClient
  */
 angular.module('blockswapClient')
-  .controller('LocalCtrl', ['$scope', 'BlockStorage', function ($scope, blockStorage) {
+  .controller('LocalCtrl', ['$scope', '$window', 'BlockStorage', function ($scope, $window, blockStorage) {
+
     $scope.files = blockStorage.getAllFiles();
+
+    /**
+     * Download a file.
+     *
+     * @param fuid
+     * @param file
+     */
+    $scope.download = function (fuid, file) {
+
+      blockStorage.joinAndRetrieve(fuid, function (data) {
+        var blob = blockStorage.decodeBase64(data, file.mime);
+        saveAs(blob, file.name);
+      });
+
+    };
+
   }]);

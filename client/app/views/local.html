@@ -8,8 +8,11 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="file in files">
-            <td>{{ file.name }}</td>
+        <tr ng-repeat="(fuid, file) in files">
+            <td>
+                <a ng-if="file.total === file.have" ng-click="download(fuid, file)">{{ file.name }}</a>
+                <span ng-if="file.total !== file.have">{{ file.name }}</span>
+            </td>
             <td>{{ file.mime }}</td>
             <td>{{ file.total }} ({{ file.have }})</td>
             <td>

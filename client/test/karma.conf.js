@@ -36,6 +36,7 @@ module.exports = function(config) {
       'bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js',
       'bower_components/cryptojslib/components/core-min.js',
       'bower_components/cryptojslib/components/sha1.js',
+      'bower_components/file-saver.js/FileSaver.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       "app/scripts/**/*.js",

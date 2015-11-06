@@ -103,4 +103,55 @@ angular.module('blockswapClient')
 
     };
 
+    /**
+     * Try to join-together a file we own and provide the finished base64 string of it.
+     *
+     * @param fuid
+     * @param finished
+     * @return string
+     */
+    this.joinAndRetrieve = function (fuid, finished) {
+
+      // Find blocks that belong to the file in our local storage
+      var blocks = this.getAllBlocks();
+      var content = [];
+
+      for (var blockIndex = 0; blockIndex < blocks.length; blockIndex ++) {
+        var block = blocks[blockIndex];
+        if (fuid == block.fuid) {
+          content[block.seq] = block.data;
+        }
+      }
+
+      finished(content.join(''));
+    };
+
+    /**
+     * Convert a base64 string to a binary data buf.
+     *
+     * @param base64Data
+     * @param contentType
+     * @returns {Blob}
+     */
+    this.decodeBase64 = function (base64Data, contentType) {
+      contentType = contentType || '';
+
+      var byteCharacters = atob(base64Data);
+      var byteArrays = [];
+
+      for (var offset = 0; offset < byteCharacters.length; offset += 512) {
+        var slice = byteCharacters.slice(offset, offset + 512);
+
+        var byteNumbers = new Array(slice.length);
+        for (var i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        var byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+      }
+
+      return new Blob(byteArrays, {type: contentType});
+    }
+
   }]);
