@@ -17,7 +17,7 @@ angular
     'ngSanitize',
     'ngTouch',
     'ngWebSocket',
-    'angularFileUpload',
+    'ngFileUpload',
     'LocalStorageModule'
   ])
   .run(['Peer', function (peer) {
