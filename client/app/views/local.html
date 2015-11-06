@@ -1,0 +1,20 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Blocks (Held)</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="file in files">
+            <td>{{ file.name }}</td>
+            <td>{{ file.mime }}</td>
+            <td>{{ file.total }} ({{ file.have }})</td>
+            <td>
+                <file-status file="file" />
+            </td>
+        </tr>
+    </tbody>
+</table>

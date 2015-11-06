@@ -40,7 +40,7 @@
             <ul class="nav navbar-nav">
                 <li class="{{ applicationArea == 'about' ? 'active' : '' }}"><a href="#/"><i class="fa fa-question-circle"></i>&nbsp; About</a></li>
                 <li class="{{ applicationArea == 'upload' ? 'active' : '' }}"><a href="#/upload"><i class="fa fa-arrow-up"></i>&nbsp; Upload</a></li>
-                <li class="{{ applicationArea == 'local' ? 'active' : '' }}"><a href="#/local"><i class="fa fa-cubes"></i>&nbsp; Local Blocks</a></li>
+                <li class="{{ applicationArea == 'local' ? 'active' : '' }}"><a href="#/local"><i class="fa fa-cubes"></i>&nbsp; Local Files</a></li>
             </ul>
           </div>
         </div>
@@ -79,6 +79,7 @@
     <script src="scripts/services/storage.js"></script>
     <script src="scripts/services/config.js"></script>
     <script src="scripts/controllers/local.js"></script>
+    <script src="scripts/directives/filestatus.js"></script>
     <!-- endbuild -->
 </body>
 </html>

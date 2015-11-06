@@ -9,6 +9,5 @@
  */
 angular.module('blockswapClient')
   .controller('LocalCtrl', ['$scope', 'BlockStorage', function ($scope, blockStorage) {
-
-
+    $scope.files = blockStorage.getAllFiles();
   }]);

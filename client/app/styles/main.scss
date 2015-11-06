@@ -13,3 +13,8 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 body,html {
   padding: 0;
 }
+
+// Progress bar variant for "white"/space
+.progress-bar-space {
+  @include progress-bar-variant(transparent);
+}
