@@ -31,5 +31,10 @@
   },
   "resolutions": {
     "angular": "1.4.4"
+  },
+  "overrides": {
+    "cryptojslib": {
+      "main": ["components/core-min.js", "components/sha1.js"]
+    }
   }
 }
