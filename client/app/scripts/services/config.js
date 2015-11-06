@@ -9,5 +9,5 @@
  */
 angular.module('blockswapClient')
   .constant('config', {
-    blockSize: 1024
+    blockSize: 4096
   });
