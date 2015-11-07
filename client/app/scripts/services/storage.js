@@ -8,7 +8,16 @@
  * Service in the blockswapClient.
  */
 angular.module('blockswapClient')
-  .service('BlockStorage', ['$log', 'localStorageService', 'config', function ($log, localStorage, config) {
+  .service('BlockStorage', ['$log', '$rootScope', 'localStorageService', 'config', function ($log, $rootScope, localStorage, config) {
+
+    localStorage.clearAll();
+
+    /**
+     * List of callbacks to run when the block store is updated.
+     *
+     * @type {Array}
+     */
+    this.updateCallbacks = [];
 
     /**
      * Store a single block locally.
@@ -18,6 +27,10 @@ angular.module('blockswapClient')
     this.store = function (block) {
       $log.debug('store block with fuid:', block.fuid, 'and seq:', block.seq);
       localStorage.set(block.fuid + '-' + block.seq, JSON.stringify(block));
+
+      for (var callbackIndex = 0; callbackIndex < this.updateCallbacks.length; callbackIndex ++) {
+        this.updateCallbacks[callbackIndex]();
+      }
     };
 
     /**
@@ -91,16 +104,24 @@ angular.module('blockswapClient')
 
       // Store each block
       for (var blockSeq = 0; blockSeq < total; blockSeq ++) {
-        this.store({
+
+        var block = {
           data: data.slice(blockSeq * config.blockSize, (blockSeq + 1) * config.blockSize),
           fuid: fuid,
           name: name,
           mime: mimeType,
           seq: blockSeq + 1,
           of: total
+        };
+
+        // Store the block
+        this.store(block);
+
+        // Announce that a new block was born
+        $rootScope.$broadcast('blockWasBorn', {
+          block: block
         });
       }
-
     };
 
     /**
@@ -152,6 +173,17 @@ angular.module('blockswapClient')
       }
 
       return new Blob(byteArrays, {type: contentType});
-    }
+    };
+
+    /**
+     * Register a callback to run when the files list is updated.
+     *
+     * @param callback
+     */
+    this.onUpdate = function (callback) {
+      if (!this.updateCallbacks.indexOf(callback)) {
+        this.updateCallbacks.push(callback);
+      }
+    };
 
   }]);

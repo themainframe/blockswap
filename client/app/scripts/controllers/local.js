@@ -19,7 +19,6 @@ angular.module('blockswapClient')
      * @param file
      */
     $scope.download = function (fuid, file) {
-
       blockStorage.joinAndRetrieve(fuid, function (data) {
         var blob = blockStorage.decodeBase64(data, file.mime);
         saveAs(blob, file.name);

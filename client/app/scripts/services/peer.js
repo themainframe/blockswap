@@ -8,10 +8,15 @@
  * Service in the blockswapClient.
  */
 angular.module('blockswapClient')
-  .service('Peer', ['$websocket', '$log', '$injector', '$window', '$interval',
-    function ($websocket, $log, $injector, $window, $interval) {
+  .service('Peer', ['$websocket', '$log', '$injector', '$window', '$interval', '$rootScope',
+    function ($websocket, $log, $injector, $window, $interval, $rootScope) {
 
-      var dataStream = $websocket('ws://' + $window.location.hostname + ':1337');
+      var that = this;
+
+      /**
+       * The data stream.
+       */
+      this.dataStream = $websocket('ws://' + $window.location.hostname + ':1337');
 
       /**
        * The base command.
@@ -26,20 +31,19 @@ angular.module('blockswapClient')
        * @type {{}}
        */
       var handlers = {
-        sysinfo: $injector.get('SysinfoHandler')
+        sysinfo: $injector.get('SysinfoHandler'),
+        put: $injector.get('PutHandler')
       };
 
-      // Periodically dispatch clientinfo commands
-      $interval(function() {
-        dataStream.send(JSON.stringify(angular.extend(command, {
-          command: 'clientinfo',
-          capacity: 1,
-          used: 1
+      $rootScope.$on('blockWasBorn', function (event, data) {
+        var block = data.block;
+        that.dataStream.send(JSON.stringify(angular.extend(command, block, {
+          command: 'put'
         })));
-      }, 2000);
+      });
 
       // Handle messages received from the websocket server
-      dataStream.onMessage(function(message) {
+      this.dataStream.onMessage(function(message) {
         var data = JSON.parse(message.data);
         if (data.hasOwnProperty('command')) {
           var command = data.command;
