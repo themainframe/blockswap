@@ -30,8 +30,14 @@ var wsServer = new webSocketServer({ httpServer: server });
  * Register handlers
  */
 var handlers = {
-    clientinfo: require('./handlers/clientinfo')
+    put: require('./handlers/put')
 };
+
+/**
+ * Register the default handler.
+ * @type {exports}
+ */
+var defaultHandler = require('./handlers/default');
 
 /**
  * Periodically send a sysinfo command to each peer.
@@ -64,12 +70,15 @@ wsServer.on('request', function(request) {
   // Peer sent a message
   connection.on('message', function(message) {
     if (message.type === 'utf8') {
-      // Proxy the message to every other node
-      for (var activePeer in peers) {
-        if (peers.hasOwnProperty(activePeer) && activePeer != id) {
-          peers[activePeer].sendUTF(message.utf8Data);
-        }
+
+      var decodedMessage = JSON.parse(message.utf8Data);
+
+      if (handlers.hasOwnProperty(decodedMessage.command)) {
+        handlers[decodedMessage.command].handle(message, id, peers);
+      } else {
+        defaultHandler.handle(message, id, peers);
       }
+
     }
   });
 
