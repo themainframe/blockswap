@@ -10,8 +10,6 @@
 angular.module('blockswapClient')
   .service('BlockStorage', ['$log', '$rootScope', 'localStorageService', 'config', function ($log, $rootScope, localStorage, config) {
 
-    localStorage.clearAll();
-
     /**
      * List of callbacks to run when the block store is updated.
      *
