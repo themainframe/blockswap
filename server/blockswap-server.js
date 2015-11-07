@@ -64,8 +64,12 @@ wsServer.on('request', function(request) {
   // Peer sent a message
   connection.on('message', function(message) {
     if (message.type === 'utf8') {
-        // Handle incoming protocol message
-        console.log(message);
+      // Proxy the message to every other node
+      for (var peerIndex = 0; peerIndex < peers.length; peerIndex ++) {
+        if (peerIndex != index) {
+          peers[peerIndex].sendUTF(message.utf8Data);
+        }
+      }
     }
   });
 

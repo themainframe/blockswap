@@ -12,11 +12,11 @@ Where _commandname_ is the name of the command, and _..._ represents any further
 
 The `version` value must always be present in all command structures.
 
-## Server → Client Commands
+## 0 - Server → Client Commands
 
-These commands are only observed in the _downstream_ direction - I.e. _from_ the server _to_ the client.
+These commands are only observed in the _downstream_ direction - I.e. _from_ the server _to_ the client; they should never be sent by a client. These are special commands that inform clients about the status of the blockswap dispatch server.
 
-### `sysinfo`
+#### 0.1 - `sysinfo`
 
 Sent periodically by the server, contains information about the state of the blockswap network.
 
@@ -26,9 +26,16 @@ Sent periodically by the server, contains information about the state of the blo
         peers: 41
     }
 
-* `peers` contains the number of peers currently connected to the server.
+* `peers` contains the number of clients currently connected to the server.
 
-### `put`
+
+## 1 - Client → Client Commands
+
+These commands are sent and received by clients. The dispatch server acts as a hub and proxies these commands to each relevant client.
+
+### 1.1 - Storing and Obtaining Blocks
+
+#### 1.1.1 - `put`
 
 A request for the client to store a block.
 
@@ -48,52 +55,23 @@ A request for the client to store a block.
 * `of` contains the number of blocks that make up the file the block is part of
 * `data` contains the base64-encoded block data
 
-### `get`
+#### 1.1.2 - `get`
 
-A request for the client to send a block.
+A request for a client to send blocks of a file.
 
     {
         command: 'get',
         version: '0.1',
         fuid: 'ccea30c73f9f5ce24a971e6b3f45a7e6efb03da2',
-        seq: 51
+        need: [51,32]
     }
 
 * `fuid` contains the unique identifier of the file within the network that the block is part of
-* `seq` contains the block sequence number
+* `need` contains an array of sequence numbers of blocks of the file identified by `fuid` that the client requires.
 
-### `delete`
+On receiving this command, a client should send `block` commands for any blocks it currently owns that match the requested criteria.
 
-A request for the client to delete a block.
-
-    {
-        command: 'delete',
-        version: '0.1',
-        fuid: 'ccea30c73f9f5ce24a971e6b3f45a7e6efb03da2',
-        seq: 51
-    }
-
-* `fuid` contains the unique identifier of the file within the network that the block is part of
-* `seq` contains the block sequence number
-
-### `query`
-
-A request for the client to respond with a list of files (of which the client has one or more blocks of) with the name matching a search term.
-
-    {
-        command: 'query',
-        version: '0.1',
-        query: 'dog'
-    }
-
-* `query` contains the search term to be used when looking for matching files.
-
-
-## Client → Server Commands
-
-These commands are only observed in the _upstream_ direction - I.e. _from_ the client _to_ the server.
-
-### `block` - response to a `get` request
+#### `block` - response to a `get` request
 
 A response to the server containing a block that was requested with a `get` command.
 
@@ -109,7 +87,24 @@ A response to the server containing a block that was requested with a `get` comm
 * `seq` contains the block sequence number
 * `data` contains the base64-encoded block data
 
-### `hit` - response to a `query` request
+### 1.2 - Searching and Receiving Results
+
+These commands deal with searching for files stored in blockswap.
+
+#### 1.2.1 - `query`
+
+A request for the client to respond with a list of files (of which the client has one or more blocks of) with the name matching a search term.
+
+    {
+        command: 'query',
+        version: '0.1',
+        query: 'dog'
+    }
+
+* `query` contains the search term to be used when looking for matching files.
+
+
+#### 1.2.2 - `hit` - response to a `query` request
 
 A response to the server indicating a hit - a match for a search term in a `query` command.
 
@@ -130,17 +125,3 @@ A response to the server indicating a hit - a match for a search term in a `quer
     * `fuid` contains the unique identifier of the file within the network that the block is part of
     * `name` contains the _nice_ filename of the file that the block is part of
     * `have` contains an array of block sequence numbers that the client has for the file
-    
-### `clientinfo` - unsolicited information about the client
-
-Information about the current state of the client.
-
-	{
-		command: 'clientinfo',
-		version: '0.1',
-		capacity: 560,
-		used: 410,		
-	} 
-	
-* `capacity` contains the total number of blocks that the client can store
-* `used` contains the total number of blocks currently held by the client
