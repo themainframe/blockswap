@@ -18,7 +18,8 @@ var command = {
  * Currently connected peers
  * @type {Array}
  */
-var peers = [];
+var peers = {};
+var peerId = 0;
 
 // Initialise the HTTP and websocket servers
 var server = http.createServer();
@@ -42,32 +43,31 @@ setInterval(function() {
             peers: peers.length
         })));
     }
-}, 2000);
+}, 60000);
 
 wsServer.on('request', function(request) {
 
-  console.log((new Date()) + ' Connection from origin ' + request.origin + '.');
-
   // Accept the connection
+  var id = peerId ++;
   var connection = request.accept(null, request.origin);
 
   // Keep track of their index to expunge them if they disconnect
-  var index = peers.push(connection) - 1;
-  console.log((new Date()) + ' Connection accepted.');
+  peers[id] = connection;
+  console.log('Peer ' + id + ' connected');
 
   // Send a sysinfo packet
   connection.sendUTF(JSON.stringify(extend(command, {
     command: 'sysinfo',
-    peers: peers.length
+    peers: id
   })));
 
   // Peer sent a message
   connection.on('message', function(message) {
     if (message.type === 'utf8') {
       // Proxy the message to every other node
-      for (var peerIndex = 0; peerIndex < peers.length; peerIndex ++) {
-        if (peerIndex != index) {
-          peers[peerIndex].sendUTF(message.utf8Data);
+      for (var activePeer in peers) {
+        if (peers.hasOwnProperty(activePeer) && activePeer != id) {
+          peers[activePeer].sendUTF(message.utf8Data);
         }
       }
     }
@@ -75,9 +75,8 @@ wsServer.on('request', function(request) {
 
   // Peer disconnected
   connection.on('close', function(connection) {
-    console.log((new Date()) + " Peer disconnected.");
-    // remove peer from the pool
-    peers.splice(index, 1);
+    console.log(" Peer " + id + " disconnected.");
+    delete peers[id];
   });
 
 });
